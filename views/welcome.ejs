@@ -1,0 +1,93 @@
+<meta name="google-signin-client_id" content="282304240513-ouolh7c1tal3p60bn7o6h666q4e8nnel.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<div class="row mt-5">
+
+<style>
+	.g-signin2{
+		margin-top: 50px;
+	}
+</style>
+
+    <div class="col-md-6 m-auto">
+        <div class="card card-body text-center">
+            <h1>Welcome To Jeopardy!</h1>
+            <h6 class="text-right">Powered by: <b>Node.js</b></h6>
+            <p>Create an account or login to start!</p>
+            <a href="/users/register" class="btn btn-primary btn-block mb-2">Register</a>
+            <a href="/users/login" class="btn btn-secondary btn-block">Login</a>
+			<div class="g-signin2" data-onsuccess="onSignIn"></div>
+			<div>
+			<button onclick="getInfo()">Get Info</button>
+			<button onclick="login()" id="login">Login</button>
+			</div>
+        </div>
+		<div id="status"></div>
+		<div class="data">
+			<p>Profile Details</p>
+			<img id="pic" class="img-circle" width="100" height="100"/>
+			<p>Email Address</p>
+			<p id="email" class="alert alert-danger"></p>
+			<a href="#" onclick="signOut();" class="btn btn-danger">Sign out</a>
+			</div>
+		</div>
+	</div>
+
+<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script>
+
+window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '2456373707706718',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v3.3'
+    });
+	FB.getLoginStatus(function(response){
+		if(response.status === 'connected'){
+		document.getElementById('status').innerHTML = 'We are connected.';
+		}
+		else if (response.status === 'not_authorized'){
+		document.getElementById('status').innerHTML = 'We are not logged in.';
+		}
+		else{
+		document.getElementById('status').innerHTML = 'You are not logged into facebook.';
+		}
+	});
+  };
+
+function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        $(".data").css("display","block");
+		$("#pic").attr('src',profile.getImageUrl());
+		$("#email").text(profile.getEmail());
+}
+
+function signOut(){
+		var auth2= gapi.auth2.getAuthInstance();
+		auth2.signOut().then(function(){
+		alert("You have been successfully signed out");
+		});
+}
+
+// login with facebook with extra permissions
+		function login() {
+			FB.login(function(response) {
+				if (response.status === 'connected') {
+		    		document.getElementById('status').innerHTML = 'We are connected.';
+		    		document.getElementById('login').style.visibility = 'hidden';
+		    	} else if (response.status === 'not_authorized') {
+		    		document.getElementById('status').innerHTML = 'We are not logged in.'
+		    	} else {
+		    		document.getElementById('status').innerHTML = 'You are not logged into Facebook.';
+		    	}
+			}, {scope: 'email'});
+		}
+		
+		// getting basic user info
+		function getInfo() {
+			FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id'}, function(response) {
+				document.getElementById('status').innerHTML = response.first_name;
+			});
+		}
+</script>

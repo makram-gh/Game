@@ -1,0 +1,33 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<h1 class="text-center">Hall Of Fame</h1>
+
+<style>
+    table,th,td{
+        border: 1px solid white;
+    }
+    th,td{
+        text-align: center;
+        font-size: 25px;
+    }
+    tr{
+        height: 50px;
+    }
+	a{
+		margin-top: 30px;
+		width: 250px;
+		float: right;
+	}
+</style>
+<table width="100%">
+    <tr>
+        <th>Username</th>
+        <th>Score</th>
+    </tr>
+    <% for(var i = 0;i < scores.length;i++){ %>
+        <tr>
+            <td> <%= scores[i].username %></td>
+            <td><%= scores[i].score %></td>
+        </tr>
+    <% } %>
+</table>
+<a href="/dashboard" class="btn btn-secondary">Back</a>

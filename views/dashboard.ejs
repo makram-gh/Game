@@ -1,0 +1,24 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<style>
+	.score {
+		margin-top: 10rem;
+	}
+
+	span {
+		margin-left: 1rem;
+	}
+</style>
+<h1 class="mt-4">Dashboard</h1>
+<p class="lead mb-3"> Welcome <%= name%> </p>
+<p class="lead mb-3"> User Since:  <%= date%> </p>
+<p>Lets Get Started!</p>
+<a href="/start" class="btn btn-secondary">Lets Play!</a>
+<a href="/hall" class="btn btn-secondary">Hall Of Fame</a>
+<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<div class="score">
+<h5>Score:<span id="latestScore"></span></h5>
+<h5>Your Highest Score:<span id="bestScore">0</span></h5>
+</div>
+
