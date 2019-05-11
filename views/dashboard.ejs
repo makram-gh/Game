@@ -18,7 +18,14 @@
 <a href="/hall" class="btn btn-secondary">Hall Of Fame</a>
 <a href="/users/logout" class="btn btn-secondary">Logout</a>
 <div class="score">
-<h5>Score:<span id="latestScore"></span></h5>
+<h5>Last Score:<span id="latestScore"></span></h5>
 <h5>Your Highest Score:<span id="bestScore">0</span></h5>
 </div>
+
+<script>
+const lastScore = document.getElementById("latestScore");
+
+lastScore.innerText = sessionStorage.getItem("mostRecentScore");
+	sessionStorage.removeItem("nextQuest");
+</script>
 

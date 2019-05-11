@@ -8,15 +8,19 @@ router.get('/', (req,res)=>res.render('welcome'));
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req,res)=>{
-	var Uname;
+	var name;
     res.render('dashboard',{
         name:req.user.name,
         date:req.user.date
     });
-sessionStorage.setItem("username",Uname);
-console.log("username = "+sessionStorage.getItem("username"))});
+sessionStorage.setItem("username", req.user.name);
+console.log("username = " + sessionStorage.getItem("username"))
+});
 
 // Start Game
 router.get('/start', ensureAuthenticated, (req,res)=>res.render('question'));
+
+// End Game
+router.get('/end', ensureAuthenticated, (req,res)=>res.render('end'));
 
 module.exports=router;
