@@ -5,6 +5,7 @@ const passport = require('passport');
 
 var url = "mongodb://localhost:27017/";
 
+
 //user model
 const User = require('../models/User');
 
@@ -12,12 +13,12 @@ const User = require('../models/User');
 //login page
 router.get('/login', (req, res) => res.render('login'));
 
-//Register page
-router.get('/register', (req, res) => res.render('register'));
-
 
 //admin login
 router.get('/adminlogin', (req, res) => res.render('adminLogin'));
+
+//Register page
+router.get('/register', (req, res) => res.render('register'));
 
 router.post('/register', (req, res) => {
     const {name, Username, password, password2} = req.body;
@@ -106,7 +107,7 @@ router.post('/adminlogin', (req, res, next) => {
 router.get('/logout', (req, res) => {
     req.logout();
     req.flash('success_msg', 'You are now Logged Out!');
-    res.redirect('/users/login');
+    res.render('welcome');
 });
 
 module.exports = router;
