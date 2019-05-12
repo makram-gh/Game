@@ -15,6 +15,10 @@ router.get('/login', (req, res) => res.render('login'));
 //Register page
 router.get('/register', (req, res) => res.render('register'));
 
+
+//admin login
+router.get('/adminlogin', (req, res) => res.render('adminLogin'));
+
 router.post('/register', (req, res) => {
     const {name, Username, password, password2} = req.body;
     let errors = [];
@@ -87,6 +91,16 @@ router.post('/login', (req, res, next) => {
         failureFlash: true
     })(req, res, next);
 });
+
+//admin login
+router.post('/adminlogin', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/admin',
+        failureRedirect: '/users/adminlogin',
+        failureFlash: true
+    })(req, res, next);
+});
+
 
 //logout handle
 router.get('/logout', (req, res) => {

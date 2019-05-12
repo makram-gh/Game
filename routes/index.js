@@ -3,11 +3,15 @@ const router=express.Router();
 var sessionStorage= require('sessionstorage');
 const{ ensureAuthenticated } = require('../config/auth');
 
+var url = "mongodb://localhost:27017/";
+
 // Welcome Page
 router.get('/', (req,res)=>res.render('welcome'));
 
 // Admin Page
-router.get('/admin',ensureAuthenticated, (req,res)=>res.render('admin'));
+router.get('/admin', (req,res)=>res.render('admin'));
+
+//router.get('/editusers', (req,res)=>res.render('editusers'));
 
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req,res)=>{

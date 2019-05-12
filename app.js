@@ -69,7 +69,6 @@ app.use((req, res, next) => {
 // Routes usage
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-app.use('/admin', require('./routes/admin'));
 
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/users/login' }),
@@ -78,14 +77,15 @@ app.get('/auth/facebook/callback',
         res.redirect('/dashboard');
     });
 
-app.get('/admin', function (req, res) {
+app.get('/editusers', function (req, res) {
 	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
-		var dbo = db.db("CSIS279");
-		dbo.collection('Users').find().toArray(function(err, result) {
-    var usersArray = [];   
-	for (var i in Users) { usersArray.push(i); }   
-	res.render('index', { users: usersArray }); 
-		});
+	var dbo = db.db("CSIS279");
+	dbo.collection('users').find().toArray(function(err,result){
+		if(err) 
+			return console.log(err);
+		console.log(result);
+		res.render('editusers.ejs', {Users:result});
+	});
 	});
 });
 
