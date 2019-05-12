@@ -10,6 +10,8 @@ var sessionStorage = require("sessionstorage");
 const app = express();
 const {ensureAuthenticated} = require('./config/auth');
 
+var url = "mongodb://localhost:27017/";
+
 //facebook stuff
 passport.serializeUser(function (user, cb) {
     cb(null, user);
@@ -17,7 +19,6 @@ passport.serializeUser(function (user, cb) {
 passport.deserializeUser(function (obj, cb) {
     cb(null, obj);
 });
-
 
 // Passport config
 require('./config/passport')(passport);
@@ -37,11 +38,11 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "csis279"
+    database:"csis279"
 });
 
 // Body-parser
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended:true}));
 
 // Express session
 app.use(session({
@@ -61,17 +62,14 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
-    res.locals.error = req.flash('error');
+    res.locals.error= req.flash('error');
     next();
 });
 
 // Routes usage
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-
-//facebook
-
-app.get('/auth/facebook', passport.authenticate('facebook'))
+app.use('/admin', require('./routes/admin'));
 
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/users/login' }),
@@ -80,26 +78,38 @@ app.get('/auth/facebook/callback',
         res.redirect('/dashboard');
     });
 
-app.get('/hall', ensureAuthenticated, (req, res) => {
-    con.connect((err) => {
-        console.log("Scores Retrieved");
+app.get('/admin', function (req, res) {
+	MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
+		var dbo = db.db("CSIS279");
+		dbo.collection('Users').find().toArray(function(err, result) {
+    var usersArray = [];   
+	for (var i in Users) { usersArray.push(i); }   
+	res.render('index', { users: usersArray }); 
+		});
+	});
+});
 
+app.get('/hall', ensureAuthenticated, (req,res) => {
+	con.connect( (err) =>{
+        console.log("Scores Retrieved");
         var sql = "SELECT * FROM highscore ORDER BY score DESC"
-        con.query(sql, (err, result) => {
-            res.render('hall', {scores: result});
+		con.query(sql, (err,result) => {
+        res.render('hall',{scores:result});
         })
     })
 })
 
-app.get('/insert', ensureAuthenticated, (req, res) => {
-    con.connect((err) => {
-        console.log("Score Inserted");
-        var uname = sessionStorage.getItem("username");
-        var sql1 = "Insert INTO highscore (id,username,score) VALUES (null,'" + uname + "',10)";
-        con.query(sql1, (err, result) => {
-            if (err) throw err;
-        })
-    })
+app.get('/insert', ensureAuthenticated, (req,res)=>{
+	con.connect((err)=>{
+		console.log("Score Inserted");
+		var scor = sessionStorage.getItem("mostRecentScore");
+		var uname = sessionStorage.getItem("username");
+		console.log(scor);
+		var sql1 = "Insert INTO highscore (id,username,score) VALUES (null,'"+uname+"','"+scor+"')";
+		con.query(sql1, (err,result)=>{
+			if(err) throw err;
+		})
+	})
 })
 
 const PORT = process.env.PORT || 3000;

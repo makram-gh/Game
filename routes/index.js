@@ -6,6 +6,9 @@ const{ ensureAuthenticated } = require('../config/auth');
 // Welcome Page
 router.get('/', (req,res)=>res.render('welcome'));
 
+// Admin Page
+router.get('/admin',ensureAuthenticated, (req,res)=>res.render('admin'));
+
 // Dashboard
 router.get('/dashboard', ensureAuthenticated, (req,res)=>{
 	var name;
@@ -14,7 +17,7 @@ router.get('/dashboard', ensureAuthenticated, (req,res)=>{
         date:req.user.date
     });
 sessionStorage.setItem("username", req.user.name);
-console.log("username = " + sessionStorage.getItem("username"))
+console.log("Username = " + sessionStorage.getItem("username"));
 });
 
 // Start Game

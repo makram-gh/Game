@@ -51,20 +51,44 @@
 		box-shadow: none;
 		transform: none;
 	}
+	
+	#remark {
+		padding-bottom: 50px;
+	}
 </style>
 
 <div class="container">
 	<div id="end" class="flex-center flex-column">
+		<h3 id="remark" class="mt-4"></h3>
         <h1 id="finalScore"></h1>
 		<a class="btn" href="/insert">Save</a>
-        <a class="btn" href="/start">Play Again</a>
+        <a class="btn" onclick="remove();" href="/start">Play Again</a>
         <a class="btn" href="/dashboard">Go Home</a>
 	</div>
 </div>
 
 <script>
 const finalScore = document.getElementById("finalScore");
+const remark = document.getElementById("remark");
+
 const mostRecentScore = sessionStorage.getItem("mostRecentScore");
 
+if(mostRecentScore<60){
+	remark.innerText = "OOPS, You Failed!" || "You can't win if you havn't lost";
+	}
+else if(mostRecentScore<80){
+	remark.innerText = "Good Job!" || "Maybe this will build character";
+	}
+else if(mostRecentScore<100){
+	remark.innerText = "Great Job! Keep On";
+	}
+else {
+	remark.innerText = "Excellent! You Smashed It";
+	}
+
 finalScore.innerText = mostRecentScore;
+
+function remove(){
+	sessionStorage.removeItem("nextQuest");
+}
 </script>

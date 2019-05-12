@@ -1,0 +1,48 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+<style>
+	#output{
+		border-collapse:collapse;
+		width:100%
+		margin-top:50px;
+	}
+			
+	#output th{
+		border: 2px solid #000;
+		padding: 8px;
+		font-size:22px;
+	}
+			
+	#output td{
+		border: 2px solid #ddd;
+		padding: 8px;
+		text-align:center;
+	}
+</style>
+
+<div>
+<h1>Users</h1>
+		<form>
+			<table id="output">
+				<tr>
+					<th>UserName</th>
+					<th>Score</th>
+				</tr>
+				<% for(var i=0;i<users.length;i++){%>
+					<tr>
+						<td><%=users[i].username %></td>
+						<td><%=users[i].score %></td>
+				<%}%>
+			</table>
+		</form>
+</div>
+
+<script>
+	function addrows() {
+		var table = document.getElementById("output");
+		var row = table.insertRow();
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+	}
+</script>

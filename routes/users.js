@@ -5,7 +5,6 @@ const passport = require('passport');
 
 var url = "mongodb://localhost:27017/";
 
-
 //user model
 const User = require('../models/User');
 
@@ -93,7 +92,7 @@ router.post('/login', (req, res, next) => {
 router.get('/logout', (req, res) => {
     req.logout();
     req.flash('success_msg', 'You are now Logged Out!');
-    res.render('welcome');
+    res.redirect('/users/login');
 });
 
 module.exports = router;
